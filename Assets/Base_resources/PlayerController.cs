@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
 	[SerializeField]
     Camera cam;
@@ -13,9 +14,22 @@ public class PlayerController : MonoBehaviour {
 	GameObject m_Pointer;
 
 	bool _spawned = false;
-	bool Spawned {
+	bool Spawned
+	{
 		get { return _spawned; }
 		set { _spawned = _spawned || value; }
+	}
+
+	bool attachedNavMeshAgent => agent != null;
+
+	void Start ()
+	{
+		
+		if (agent == null)
+		{
+			agent = GetComponent<NavMeshAgent>();	
+		}
+		
 	}
 
     // Update is called once per frame
@@ -30,7 +44,8 @@ public class PlayerController : MonoBehaviour {
 		if (collided)
 		{
 
-			if (!Spawned) {
+			if (!Spawned)
+			{
 				m_Pointer = Instantiate(m_Pointer, hit.point, Quaternion.identity);
 				Spawned = true;
 			}
@@ -39,11 +54,14 @@ public class PlayerController : MonoBehaviour {
 				m_Pointer.transform.position = hit.point;
 
 
-			if (Input.GetMouseButtonDown(0)) {
+			if (attachedNavMeshAgent && Input.GetMouseButtonDown(0))
+			{
 				agent.SetDestination(hit.point);
 			}
 
-		} else {
+		}
+		else
+		{
 			m_Pointer.SetActive(false);
 		}
 
