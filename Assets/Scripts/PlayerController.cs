@@ -3,12 +3,7 @@ using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
-
-	[SerializeField]
-    Camera cam;
-
-	[SerializeField]
-    NavMeshAgent agent;
+	NavMeshAgent agent;
 
 	[SerializeField]
 	GameObject m_Pointer;
@@ -20,23 +15,16 @@ public class PlayerController : MonoBehaviour
 		set { _spawned = _spawned || value; }
 	}
 
-	bool attachedNavMeshAgent => agent != null;
-
 	void Start ()
 	{
-		
-		if (agent == null)
-		{
-			agent = GetComponent<NavMeshAgent>();	
-		}
-		
+		agent = GetComponent<NavMeshAgent>();	
 	}
 
     // Update is called once per frame
     void Update () 
     {
 
-		Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		RaycastHit hit;
 
 		bool collided = Physics.Raycast(ray, out hit);
@@ -53,22 +41,19 @@ public class PlayerController : MonoBehaviour
 				m_Pointer.SetActive(true);
 				m_Pointer.transform.position = hit.point;
 
+			// La posición a la que queremos mover el agente está en 'hit.point'
+			// hit.point es un Vector3, es decir que podríamos hacer:
+			// transform.position = hit.point;
 
-			if (attachedNavMeshAgent)
+			if (Input.GetMouseButtonDown(0) && tag == "Player")
 			{
+				// Mover 'Human'
 
-				if (Input.GetMouseButtonDown(0) && tag == "Player")
-				{
-					// Mover 'Human'
-					agent.SetDestination(hit.point);
+			}
+			else if (Input.GetMouseButtonDown(1) && tag == "Pig")
+			{
+				// Mover 'Pig'
 
-				}
-				else if (Input.GetMouseButtonDown(1) && tag == "Pig")
-				{
-					// Mover 'Pig'
-					agent.SetDestination(hit.point);
-
-				}
 			}
 
 		}
