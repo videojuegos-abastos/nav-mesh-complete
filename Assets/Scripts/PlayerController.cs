@@ -54,9 +54,21 @@ public class PlayerController : MonoBehaviour
 				m_Pointer.transform.position = hit.point;
 
 
-			if (attachedNavMeshAgent && Input.GetMouseButtonDown(0))
+			if (attachedNavMeshAgent)
 			{
-				agent.SetDestination(hit.point);
+
+				if (Input.GetMouseButtonDown(0) && tag == "Player")
+				{
+					// Mover 'Human'
+					agent.SetDestination(hit.point);
+
+				}
+				else if (Input.GetMouseButtonDown(1) && tag == "Pig")
+				{
+					// Mover 'Pig'
+					agent.SetDestination(hit.point);
+
+				}
 			}
 
 		}
